@@ -1,0 +1,149 @@
+.kyc-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+  padding: 24px;
+}
+
+.kyc-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kyc-back {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.kyc-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ink);
+}
+
+.tier-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tier-card.active {
+  border-color: var(--purple);
+  box-shadow: 0 10px 30px -10px rgba(91,42,134,0.15);
+}
+
+.tier-card.completed {
+  background: rgba(46, 204, 113, 0.05);
+  border-color: rgba(46, 204, 113, 0.3);
+}
+
+.tier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.tier-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tier-desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.tier-status {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-completed {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ECC71;
+}
+
+.status-pending {
+  background: rgba(240,180,41,0.1);
+  color: var(--gold);
+}
+
+.status-locked {
+  background: var(--page-bg);
+  color: var(--muted);
+}
+
+.tier-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+
+.tier-benefits li {
+  font-size: 14px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tier-benefits li svg {
+  color: #2ECC71;
+}
+
+.tier-form {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.btn-upgrade {
+  width: 100%;
+  background: var(--purple);
+  color: #fff;
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-upgrade:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}

@@ -1,0 +1,166 @@
+.bookkeeping-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+  padding: 24px 24px 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bk-header {
+  margin-bottom: 32px;
+}
+
+.bk-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.bk-sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.bk-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.bk-card-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bk-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.bk-stat-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bk-stat-label {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.bk-stat-value {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.bk-stat-value.positive {
+  color: #2ECC71;
+}
+
+.bk-stat-value.negative {
+  color: #E74C3C;
+}
+
+.expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.expense-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expense-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.expense-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.expense-currency {
+  position: absolute;
+  left: 16px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.expense-input {
+  width: 100%;
+  padding: 14px 14px 14px 40px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--page-bg);
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.expense-input:focus {
+  border-color: var(--purple);
+  background: #fff;
+}
+
+.net-profit-card {
+  background: linear-gradient(135deg, var(--purple-deep), var(--purple));
+  color: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 20px 40px -15px rgba(91,42,134,0.5);
+}
+
+.net-profit-label {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.net-profit-amount {
+  font-family: 'Sora', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.net-profit-rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 12px;
+}

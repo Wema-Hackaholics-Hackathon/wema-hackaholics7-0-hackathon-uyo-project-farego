@@ -1,0 +1,45 @@
+:root {
+  --purple: #5B2A86;
+  --purple-deep: #34184F;
+  --gold: #F0B429;
+  --gold-deep: #C98F16;
+  --cream: #FBF8F4;
+  --ink: #211432;
+  --muted: #6B5C78;
+  --page-bg: #F6F3FB;
+  --border: #E4DCF0;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--page-bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
