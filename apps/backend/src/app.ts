@@ -7,6 +7,7 @@ import { authRouter } from "./routes/auth.js";
 import { driversRouter } from "./routes/drivers.js";
 import { paymentsRouter } from "./routes/payments.js";
 import { webhooksRouter } from "./routes/webhooks.js";
+import { bookkeepingRouter } from "./routes/bookkeeping.js";
 import { errorHandler, notFoundHandler } from "./lib/errors.js";
 
 export const app = express();
@@ -29,6 +30,7 @@ app.get("/ready", async (_req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/drivers", driversRouter);
 app.use("/api/payments", paymentsRouter);
+app.use("/api/bookkeeping", bookkeepingRouter);
 app.use("/api/webhooks", webhooksRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -2,7 +2,7 @@
   min-height: 100vh;
   background-color: var(--page-bg);
   color: var(--ink);
-  padding: 24px;
+  padding: 124px 24px 24px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -33,12 +33,35 @@
 }
 
 .dashboard-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
-  position: relative;
-  z-index: 2;
+  gap: 20px;
+  padding: 18px 24px;
+  min-height: 96px;
+  background: rgba(246, 243, 251, 0.9);
+  border-bottom: 1px solid rgba(228, 220, 240, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 120;
+}
+
+.dashboard-heading-group {
+  min-width: 0;
+}
+
+.dashboard-driver-name {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: min(60vw, 420px);
 }
 
 .dashboard-title {
@@ -519,12 +542,13 @@
 
 @media (max-width: 480px) {
   .dashboard-container {
-    padding: 18px 12px calc(96px + env(safe-area-inset-bottom));
+    padding: calc(112px + env(safe-area-inset-top)) 12px calc(96px + env(safe-area-inset-bottom));
   }
 
   .dashboard-header {
     gap: 12px;
-    margin-bottom: 24px;
+    min-height: calc(92px + env(safe-area-inset-top));
+    padding: calc(12px + env(safe-area-inset-top)) 12px 12px;
   }
 
   .dashboard-title {
@@ -534,6 +558,16 @@
   .dashboard-user {
     flex-shrink: 0;
     gap: 8px;
+  }
+
+  .dashboard-driver-name {
+    max-width: 52vw;
+  }
+
+  .kyc-badge {
+    padding-inline: 9px;
+    font-size: 9px;
+    letter-spacing: 0.03em;
   }
 
   .earnings-card {

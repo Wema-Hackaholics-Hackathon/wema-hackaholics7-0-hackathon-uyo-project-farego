@@ -42,6 +42,13 @@ enum NotificationStatus {
   FAILED
 }
 
+enum ExpenseCategory {
+  FUEL
+  UNION_TICKET
+  MAINTENANCE
+  OTHER
+}
+
 model Driver {
   id              String         @id @default(uuid()) @db.Uuid
   publicId        String         @unique @default(cuid())
@@ -56,6 +63,7 @@ model Driver {
   authSessions    AuthSession[]
   payments        Payment[]
   notifications   Notification[]
+  expenses        Expense[]
 }
 
 model OtpChallenge {
@@ -162,4 +170,18 @@ model Notification {
   driver     Driver              @relation(fields: [driverId], references: [id], onDelete: Cascade)
 
   @@index([driverId, createdAt])
+}
+
+model Expense {
+  id          String          @id @default(uuid()) @db.Uuid
+  driverId    String          @db.Uuid
+  category    ExpenseCategory
+  amountKobo  BigInt
+  note        String?
+  incurredAt  DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  driver      Driver          @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@index([driverId, incurredAt])
 }

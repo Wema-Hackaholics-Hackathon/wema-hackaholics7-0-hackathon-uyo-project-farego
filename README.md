@@ -3,14 +3,14 @@
 ## Team Members
 
 - Peters Ledum Favour
-- Praise
+- Praise Chinaemeiheukwu Otuka
 
 ---
 
 ## 🚀 Live Demo
 
-- **Live Application:** [Link to your deployed Vercel/Netlify/Render URL]
-- **Backend API:** [Link to your live backend API endpoint URL, if separate]
+- **Live Application:** https://farego.vercel.app/
+- **Backend API:** https://wema-hackaholics7-0-hackathon-uyo.onrender.com
 - **Recorded Demo:** [Link to your recorded demo explaining how your solution works using Loom].
 
 ---
@@ -73,6 +73,7 @@ in a tracked file.
     pnpm install
     ```
 4.  Create a `.env.local` file and add the necessary environment variables:
+
     ```
 
     ```

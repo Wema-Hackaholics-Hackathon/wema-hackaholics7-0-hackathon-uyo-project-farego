@@ -117,11 +117,11 @@ export default function Dashboard() {
       <div className="bg-circle-2"></div>
 
       <header className="dashboard-header">
-        <div>
-          <h1 className="dashboard-title">Good morning,</h1>
-          <p style={{ margin: 0, color: "var(--muted)", fontSize: "14px" }}>
-            {data.driver.fullName}
-          </p>
+        <div className="dashboard-heading-group">
+          <div>
+            <h1 className="dashboard-title">Good morning,</h1>
+            <p className="dashboard-driver-name">{data.driver.fullName}</p>
+          </div>
           {/* <Link href="/kyc" className="kyc-badge">
             <ShieldAlert size={12} />
             KYC Level: {data.driver.kycLevel}
@@ -438,37 +438,47 @@ async function createPaymentPoster(
     305,
   );
 
-  roundRect(context, 105, 365, 990, 880, 52);
+  roundRect(context, 105, 365, 990, 980, 52);
   context.fillStyle = "#FFFFFF";
   context.fill();
 
   const qrImage = await loadCanvasImage(qrDataUrl);
-  context.drawImage(qrImage, 245, 420, 710, 710);
+  context.drawImage(qrImage, 260, 400, 680, 680);
 
   context.fillStyle = "#2D1452";
   context.font = "700 40px Arial, sans-serif";
-  context.fillText(`Pay ${driverName}`, 600, 1170);
+  context.fillText(`Pay ${driverName}`, 600, 1135);
   context.fillStyle = "#5B2A86";
   context.font = "700 30px Arial, sans-serif";
-  context.fillText(`Wema account: ${accountNumber}`, 600, 1220);
+  context.fillText(`Wema account: ${accountNumber}`, 600, 1185);
+
+  context.fillStyle = "#6B5C78";
+  context.font = "700 23px Arial, sans-serif";
+  context.fillText("OR DIAL USSD", 600, 1240);
+  roundRect(context, 245, 1260, 710, 62, 22);
+  context.fillStyle = "#FFF4D6";
+  context.fill();
+  context.fillStyle = "#2D1452";
+  context.font = "700 30px Arial, sans-serif";
+  context.fillText(`*945*Amount*${accountNumber}#`, 600, 1302);
 
   context.fillStyle = "#FFFFFF";
   context.font = "700 34px Arial, sans-serif";
   context.fillText(
     "1. Open your camera  •  2. Scan the code  •  3. Enter fare",
     600,
-    1335,
+    1415,
   );
   context.fillStyle = "rgba(255,255,255,0.8)";
   context.font = "400 25px Arial, sans-serif";
-  context.fillText("No FareGo app required", 600, 1390);
+  context.fillText("No FareGo app required", 600, 1460);
   context.fillStyle = "#F0B429";
   context.font = "700 27px Arial, sans-serif";
-  context.fillText("PAYMENT CONFIRMED INSTANTLY • SECURED BY ALAT", 600, 1490);
+  context.fillText("PAYMENT CONFIRMED INSTANTLY • SECURED BY ALAT", 600, 1525);
 
   context.fillStyle = "rgba(255,255,255,0.62)";
   context.font = "400 20px Arial, sans-serif";
-  context.fillText(paymentUrl.replace(/^https?:\/\//, ""), 600, 1540);
+  context.fillText(paymentUrl.replace(/^https?:\/\//, ""), 600, 1570);
 
   return canvas.toDataURL("image/png", 1);
 }
