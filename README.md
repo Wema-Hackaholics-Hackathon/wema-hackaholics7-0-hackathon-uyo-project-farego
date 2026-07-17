@@ -46,7 +46,17 @@ _List the major technologies, frameworks, and platforms you used to build your p
 
 ## ⚙️ How to Set Up and Run Locally (Optional)
 
-_Briefly explain the steps to get your project running on a local machine._
+1. Copy `apps/backend/.env.example` to `apps/backend/.env` and add the Supabase
+   PostgreSQL connection string.
+2. Copy `apps/web/.env.example` to `apps/web/.env.local`.
+3. Run `pnpm install`, `pnpm --filter @farego/backend db:generate`, and
+   `pnpm --filter @farego/backend db:migrate`.
+4. Run the API and web app with `pnpm dev`.
+
+The demo uses OTP `123456`, mock Wema account issuance, and mock ALATPay payments
+unless their corresponding environment settings are changed. Never commit database
+passwords or ALATPay secret keys. Rotate any credential that has previously appeared
+in a tracked file.
 
 **Example:**
 
@@ -60,14 +70,43 @@ _Briefly explain the steps to get your project running on a local machine._
     ```
 3.  Install dependencies:
     ```bash
-    npm install
+    pnpm install
     ```
 4.  Create a `.env.local` file and add the necessary environment variables:
     ```
-    DATABASE_URL=...
-    API_KEY=...
+
     ```
+
+# Supabase Postgres connection (use the transaction pooler for the running API)
+
+DATABASE_URL="postgresql://postgres.PROJECT_REF:PASSWORD@HOST:6543/postgres?pgbouncer=true"
+
+# Supabase direct/session connection used by Prisma migrations.
+
+DIRECT_URL="postgresql://postgres.PROJECT_REF:PASSWORD@HOST:5432/postgres"
+
+PORT=4000
+WEB_ORIGIN="http://localhost:3000"
+PUBLIC_WEB_URL="http://localhost:3000"
+
+# Demo authentication
+
+MOCK_OTP_CODE="123456"
+OTP_TTL_MINUTES=10
+SESSION_TTL_DAYS=7
+
+# Keep mock mode until ALATPay merchant credentials are available.
+
+PAYMENT_PROVIDER="mock"
+ALATPAY_BASE_URL="https://apibox.alatpay.ng"
+ALATPAY_PUBLIC_KEY=""
+ALATPAY_SECRET_KEY=""
+ALATPAY_BUSINESS_ID=""
+ALATPAY_WEBHOOK_SECRET=""
+
+    ```
+
 5.  Run the development server:
     ```bash
-    npm run dev
+    pnpm run dev
     ```

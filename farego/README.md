@@ -157,3 +157,17 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.dev/docs/reference/configuration)
 - [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+
+## FareGo local setup
+
+1. Copy `apps/backend/.env.example` to `apps/backend/.env` and add the Supabase
+   PostgreSQL connection string.
+2. Copy `apps/web/.env.example` to `apps/web/.env.local`.
+3. Run `pnpm install`, `pnpm --filter @farego/backend db:generate`, and
+   `pnpm --filter @farego/backend db:migrate`.
+4. Run the API and web app with `pnpm dev`.
+
+The demo uses OTP `123456`, mock Wema account issuance, and mock ALATPay payments
+unless their corresponding environment settings are changed. Never commit database
+passwords or ALATPay secret keys. Rotate any credential that has previously appeared
+in a tracked file.
