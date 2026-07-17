@@ -64,9 +64,9 @@ in a tracked file.
     ```bash
     git clone https://github.com/Wema-Hackaholics-Hackathon/wema-hackaholics7-0-hackathon-uyo-project-farego.git
     ```
-2.  Navigate to the project directory:
+2.  Navigate to the cloned project directory:
     ```bash
-    cd farego
+    cd wema-hackaholics7-0-hackathon-uyo-project-farego
     ```
 3.  Install dependencies:
     ```bash
