@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { api } from "../../lib/api";
 import { ButtonLoader } from "../../components/Loading";
+import { isFullName, isNigerianPhone, isOtp, isWemaAccount } from "../../lib/validation";
 import "./signup.css";
 
 type Step = "NAME" | "HAS_WEMA" | "WEMA_ACCOUNT" | "PHONE" | "OTP" | "SUCCESS";
@@ -32,17 +33,31 @@ export default function SignupPage() {
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.length > 2) goForward("HAS_WEMA");
+    if (!isFullName(name)) {
+      setError("Enter your first and last name using letters only.");
+      return;
+    }
+    setName(name.trim().replace(/\s+/g, " "));
+    setError("");
+    goForward("HAS_WEMA");
   };
 
   const handleWemaAccountSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (wemaAccount.length === 10) goForward("PHONE");
+    if (!isWemaAccount(wemaAccount)) {
+      setError("Enter a valid 10-digit Wema account number.");
+      return;
+    }
+    setError("");
+    goForward("PHONE");
   };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone.length <= 9) return;
+    if (!isNigerianPhone(phone)) {
+      setError("Enter a valid Nigerian mobile number, for example 08012345678.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -67,6 +82,7 @@ export default function SignupPage() {
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
+    setError("");
 
     // Auto-focus next input
     if (value && index < 5) {
@@ -75,9 +91,47 @@ export default function SignupPage() {
     }
   };
 
+  const handleOtpKeyDown = (
+    index: number,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Backspace") {
+      event.preventDefault();
+      const nextOtp = [...otp];
+      if (nextOtp[index]) {
+        nextOtp[index] = "";
+        setOtp(nextOtp);
+        if (index > 0) document.getElementById(`otp-${index - 1}`)?.focus();
+      } else if (index > 0) {
+        nextOtp[index - 1] = "";
+        setOtp(nextOtp);
+        document.getElementById(`otp-${index - 1}`)?.focus();
+      }
+      return;
+    }
+
+    if (event.key === "ArrowLeft" && index > 0) {
+      document.getElementById(`otp-${index - 1}`)?.focus();
+    }
+    if (event.key === "ArrowRight" && index < 5) {
+      document.getElementById(`otp-${index + 1}`)?.focus();
+    }
+  };
+
+  const handleOtpPaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    const digits = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!digits) return;
+    event.preventDefault();
+    setOtp(Array.from({ length: 6 }, (_, index) => digits[index] || ""));
+    document.getElementById(`otp-${Math.min(digits.length, 6) - 1}`)?.focus();
+  };
+
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp.every((v) => v !== "")) return;
+    if (!isOtp(otp.join(""))) {
+      setError("Enter the complete 6-digit verification code.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -162,7 +216,10 @@ export default function SignupPage() {
                 className="form-input"
                 placeholder="e.g. John Doe"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => { setName(e.target.value); setError(""); }}
+                minLength={3}
+                maxLength={100}
+                autoComplete="name"
                 required
                 autoFocus
               />
@@ -237,9 +294,11 @@ export default function SignupPage() {
                 placeholder="e.g. 0123456789"
                 value={wemaAccount}
                 onChange={(e) =>
-                  setWemaAccount(e.target.value.replace(/[^0-9]/g, ""))
+                  { setWemaAccount(e.target.value.replace(/[^0-9]/g, "")); setError(""); }
                 }
                 maxLength={10}
+                pattern="[0-9]{10}"
+                autoComplete="off"
                 required
                 autoFocus
               />
@@ -267,7 +326,10 @@ export default function SignupPage() {
                 className="form-input"
                 placeholder="e.g. 0801 234 5678"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => { setPhone(e.target.value); setError(""); }}
+                minLength={11}
+                maxLength={17}
+                autoComplete="tel"
                 required
                 autoFocus
               />
@@ -301,12 +363,10 @@ export default function SignupPage() {
                     onChange={(e) =>
                       handleOtpChange(i, e.target.value.replace(/[^0-9]/g, ""))
                     }
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && !digit && i > 0) {
-                        const prev = document.getElementById(`otp-${i - 1}`);
-                        prev?.focus();
-                      }
-                    }}
+                    onKeyDown={(event) => handleOtpKeyDown(i, event)}
+                    onPaste={handleOtpPaste}
+                    maxLength={1}
+                    autoComplete={i === 0 ? "one-time-code" : "off"}
                     required
                   />
                 ))}

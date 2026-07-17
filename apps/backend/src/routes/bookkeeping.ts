@@ -61,8 +61,8 @@ bookkeepingRouter.get("/", async (req, res) => {
 bookkeepingRouter.post("/expenses", async (req, res) => {
   const input = z.object({
     category: z.nativeEnum(ExpenseCategory),
-    amount: z.number().positive().max(10_000_000),
-    note: z.string().trim().max(140).optional(),
+    amount: z.number().finite().positive().max(10_000_000).multipleOf(0.01),
+    note: z.string().trim().min(1).max(140).optional(),
   }).parse(req.body);
 
   const expense = await prisma.expense.create({

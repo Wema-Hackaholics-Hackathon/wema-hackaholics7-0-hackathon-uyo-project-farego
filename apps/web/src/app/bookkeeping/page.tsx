@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { api } from "../../lib/api";
 import { ButtonLoader, PageLoader } from "../../components/Loading";
+import { validMoneyAmount } from "../../lib/validation";
 import "./bookkeeping.css";
 import "../dashboard/dashboard.css";
 
@@ -76,7 +77,14 @@ export default function BookkeepingPage() {
   const addExpense = async (event: React.FormEvent) => {
     event.preventDefault();
     const parsedAmount = Number(amount);
-    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) return;
+    if (!validMoneyAmount(amount, 10_000_000)) {
+      setError("Enter an expense between ₦1 and ₦10,000,000, using no more than two decimal places.");
+      return;
+    }
+    if (note.trim().length > 140) {
+      setError("Expense note cannot be longer than 140 characters.");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -196,6 +204,7 @@ export default function BookkeepingPage() {
             <button className="modal-close" type="button" aria-label="Close" disabled={saving} onClick={() => setShowAddExpense(false)}><X size={22} /></button>
             <h2>Add an expense</h2>
             <p>Save an expense to {data.driver.fullName}&apos;s daily bookkeeping.</p>
+            {error && <p className="bk-error" role="alert">{error}</p>}
             <form className="expense-form" onSubmit={addExpense}>
               <label className="expense-input-group">
                 <span className="expense-label">Category</span>
@@ -205,11 +214,11 @@ export default function BookkeepingPage() {
               </label>
               <label className="expense-input-group">
                 <span className="expense-label">Amount</span>
-                <div className="expense-input-wrapper"><span className="expense-currency">₦</span><input className="expense-input" type="number" inputMode="decimal" min="1" step="0.01" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="0" required autoFocus /></div>
+                <div className="expense-input-wrapper"><span className="expense-currency">₦</span><input className="expense-input" type="number" inputMode="decimal" min="1" max="10000000" step="0.01" value={amount} onChange={(event) => { setAmount(event.target.value); setError(""); }} placeholder="0" required autoFocus /></div>
               </label>
               <label className="expense-input-group">
                 <span className="expense-label">Note (optional)</span>
-                <input className="expense-input expense-note-input" type="text" maxLength={140} value={note} onChange={(event) => setNote(event.target.value)} placeholder="e.g. Full tank before morning shift" />
+                <input className="expense-input expense-note-input" type="text" maxLength={140} value={note} onChange={(event) => { setNote(event.target.value); setError(""); }} placeholder="e.g. Full tank before morning shift" />
               </label>
               <button className="btn-submit" type="submit" disabled={saving || Number(amount) <= 0}>
                 {saving ? <ButtonLoader label="Saving expense" /> : <><Plus size={18} /> Add expense</>}

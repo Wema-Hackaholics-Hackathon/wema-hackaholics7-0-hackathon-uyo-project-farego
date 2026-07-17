@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ShieldAlert, Briefcase } from "lucide-react";
 import "./kyc.css";
 import "../signup/signup.css"; // Reuse form inputs
+import { isAddress, isIdentityNumber, isOrganizationName, isPlateNumber } from "../../lib/validation";
 
 export default function KYCPage() {
   const [level, setLevel] = useState<1 | 2 | 3>(1);
@@ -12,14 +13,33 @@ export default function KYCPage() {
   const [address, setAddress] = useState("");
   const [plate, setPlate] = useState("");
   const [union, setUnion] = useState("");
+  const [error, setError] = useState("");
 
   const handleVerifyLevel2 = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isIdentityNumber(bvn)) {
+      setError("Enter a valid 11-digit BVN or NIN.");
+      return;
+    }
+    if (!isPlateNumber(plate)) {
+      setError("Enter a valid Nigerian plate number, for example LAG-123-XY.");
+      return;
+    }
+    if (!isAddress(address)) {
+      setError("Enter a complete address between 10 and 160 characters.");
+      return;
+    }
+    setError("");
     setLevel(2);
   };
 
   const handleVerifyLevel3 = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isOrganizationName(union)) {
+      setError("Enter a valid union or association name.");
+      return;
+    }
+    setError("");
     setLevel(3);
   };
 
@@ -72,6 +92,7 @@ export default function KYCPage() {
 
         {level === 1 && (
           <form className="tier-form" onSubmit={handleVerifyLevel2}>
+            {error && <p className="form-error" role="alert">{error}</p>}
             <div className="form-group">
               <label className="form-label">BVN or NIN</label>
               <input 
@@ -79,7 +100,11 @@ export default function KYCPage() {
                 className="form-input" 
                 placeholder="Enter 11-digit number" 
                 value={bvn}
-                onChange={(e) => setBvn(e.target.value)}
+                onChange={(e) => { setBvn(e.target.value.replace(/\D/g, "")); setError(""); }}
+                inputMode="numeric"
+                minLength={11}
+                maxLength={11}
+                pattern="[0-9]{11}"
                 required 
               />
             </div>
@@ -90,7 +115,9 @@ export default function KYCPage() {
                 className="form-input" 
                 placeholder="e.g. LAG-123-XY" 
                 value={plate}
-                onChange={(e) => setPlate(e.target.value)}
+                onChange={(e) => { setPlate(e.target.value.toUpperCase()); setError(""); }}
+                minLength={7}
+                maxLength={12}
                 required 
               />
             </div>
@@ -101,7 +128,10 @@ export default function KYCPage() {
                 className="form-input" 
                 placeholder="123 Example Street, Lagos" 
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) => { setAddress(e.target.value); setError(""); }}
+                minLength={10}
+                maxLength={160}
+                autoComplete="street-address"
                 required 
               />
             </div>
@@ -132,6 +162,7 @@ export default function KYCPage() {
 
         {level === 2 && (
           <form className="tier-form" onSubmit={handleVerifyLevel3}>
+            {error && <p className="form-error" role="alert">{error}</p>}
             <div className="form-group">
               <label className="form-label">Union / Association Name</label>
               <input 
@@ -139,7 +170,9 @@ export default function KYCPage() {
                 className="form-input" 
                 placeholder="e.g. NURTW Local Branch" 
                 value={union}
-                onChange={(e) => setUnion(e.target.value)}
+                onChange={(e) => { setUnion(e.target.value); setError(""); }}
+                minLength={3}
+                maxLength={100}
                 required 
               />
             </div>

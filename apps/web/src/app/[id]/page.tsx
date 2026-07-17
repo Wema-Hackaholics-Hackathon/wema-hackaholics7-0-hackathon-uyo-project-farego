@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { api } from "../../lib/api";
 import { ButtonLoader, PageLoader } from "../../components/Loading";
+import { validMoneyAmount } from "../../lib/validation";
 import "../pay/pay.css";
 import "../signup/signup.css"; // Reuse button styles
 
@@ -36,7 +37,18 @@ export default function PassengerPaymentPage() {
 
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (Number(amount) <= 0 || !driver) return;
+    if (!driver) {
+      setError("This driver could not be loaded. Please scan the QR code again.");
+      return;
+    }
+    if (!validMoneyAmount(amount, 1_000_000)) {
+      setError("Enter an amount between ₦1 and ₦1,000,000, using no more than two decimal places.");
+      return;
+    }
+    if (description.trim().length > 140) {
+      setError("Description cannot be longer than 140 characters.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -140,10 +152,14 @@ export default function PassengerPaymentPage() {
             <span className="amount-currency">₦</span>
             <input
               type="number"
+              inputMode="decimal"
+              min="1"
+              max="1000000"
+              step="0.01"
               className="amount-input"
               placeholder="0"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => { setAmount(e.target.value === "" ? "" : Number(e.target.value)); setError(""); }}
               autoFocus
               required
             />
@@ -161,7 +177,8 @@ export default function PassengerPaymentPage() {
               className="form-input"
               placeholder="e.g. Passenger Fare, Baggage Fee"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => { setDescription(e.target.value); setError(""); }}
+              maxLength={140}
               style={{ fontSize: "14px", padding: "12px" }}
             />
           </div>

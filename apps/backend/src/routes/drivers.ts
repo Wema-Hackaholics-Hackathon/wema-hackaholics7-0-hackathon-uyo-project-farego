@@ -13,7 +13,9 @@ const bearerToken = (header?: string) => header?.startsWith("Bearer ") ? header.
 
 driversRouter.post("/register", async (req, res) => {
   const input = z.object({
-    fullName: z.string().trim().min(3).max(100),
+    fullName: z.string().trim().min(3).max(100)
+      .regex(/^[\p{L}][\p{L}' -]+$/u, "Name contains invalid characters")
+      .refine((name) => name.split(/\s+/).length >= 2, "Enter first and last name"),
     email: z.string().email().optional(),
     consent: z.literal(true),
   }).parse(req.body);

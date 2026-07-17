@@ -5,7 +5,11 @@ import { requestOtp, verifyOtp } from "../services/auth.js";
 
 export const authRouter = Router();
 
-const phoneSchema = z.object({ phone: z.string().min(10).max(20) });
+const phoneSchema = z.object({
+  phone: z.string().trim().transform((value) => value.replace(/[\s()-]/g, "")).pipe(
+    z.string().regex(/^(?:\+234|234|0)[789]\d{9}$/, "Enter a valid Nigerian mobile number"),
+  ),
+});
 
 authRouter.post("/otp/request", async (req, res) => {
   const { phone } = phoneSchema.parse(req.body);

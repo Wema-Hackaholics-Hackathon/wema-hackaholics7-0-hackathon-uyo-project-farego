@@ -76,6 +76,16 @@
   color: #A094AE;
 }
 
+.form-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fef3f2;
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .otp-container {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));

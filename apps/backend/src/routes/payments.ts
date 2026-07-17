@@ -12,8 +12,8 @@ export const paymentsRouter = Router();
 paymentsRouter.post("/", async (req, res) => {
   const input = z.object({
     driverPublicId: z.string().min(1),
-    amount: z.number().positive().max(1_000_000),
-    description: z.string().trim().max(140).optional(),
+    amount: z.number().finite().positive().max(1_000_000).multipleOf(0.01),
+    description: z.string().trim().min(1).max(140).optional(),
     customerName: z.string().trim().min(2).max(100).default("FareGo Passenger"),
     customerEmail: z.string().email().default("passenger@farego.demo"),
     customerPhone: z.string().min(10).max(20).optional(),
