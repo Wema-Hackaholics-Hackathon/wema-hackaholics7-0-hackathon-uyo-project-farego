@@ -1,0 +1,115 @@
+.button-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.loading-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(91, 42, 134, 0.18);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  animation: farego-spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+.loading-spinner-small {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+}
+
+.page-loader {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  background: var(--page-bg);
+  color: var(--ink);
+}
+
+.page-loader-light {
+  background: var(--purple-deep);
+  color: #fff;
+}
+
+.page-loader-light .loading-spinner {
+  border-color: rgba(255, 255, 255, 0.25);
+  border-top-color: var(--gold);
+}
+
+.page-loader-mark {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: var(--gold);
+  color: var(--purple-deep);
+  font: 800 32px 'Sora', sans-serif;
+  box-shadow: 0 14px 30px rgba(52, 24, 79, 0.2);
+}
+
+.page-loader h1 {
+  font: 700 21px 'Sora', sans-serif;
+  margin-bottom: 7px;
+}
+
+.page-loader p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.page-loader-light p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.dashboard-loader {
+  min-height: 100dvh;
+  padding: 24px;
+  background: var(--page-bg);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #ece7f3 25%, #f7f4fa 50%, #ece7f3 75%);
+  background-size: 200% 100%;
+  animation: farego-shimmer 1.4s ease-in-out infinite;
+  border-radius: 12px;
+}
+
+.skeleton-row,
+.skeleton-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.skeleton-heading { width: 190px; height: 22px; margin-bottom: 10px; }
+.skeleton-heading.skeleton-short { width: 130px; margin: 30px 0 16px; }
+.skeleton-text { width: 120px; height: 14px; }
+.skeleton-avatar { width: 42px; height: 42px; border-radius: 50%; }
+.skeleton-wallet { height: 270px; margin: 32px 0 24px; border-radius: 24px; }
+.skeleton-action { width: 50%; height: 82px; }
+.skeleton-transaction { height: 72px; margin-bottom: 12px; }
+
+@keyframes farego-spin { to { transform: rotate(360deg); } }
+@keyframes farego-shimmer { to { background-position: -200% 0; } }
+
+@media (max-width: 480px) {
+  .dashboard-loader { padding: 18px 12px; }
+  .skeleton-wallet { height: 310px; margin-top: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner { animation-duration: 1.5s !important; }
+  .skeleton { animation: none !important; }
+}

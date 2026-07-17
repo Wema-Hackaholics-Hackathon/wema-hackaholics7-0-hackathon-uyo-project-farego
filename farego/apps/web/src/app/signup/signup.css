@@ -1,5 +1,6 @@
 .signup-container {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,13 +77,16 @@
 }
 
 .otp-container {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(4px, 2vw, 8px);
+  width: 100%;
 }
 
 .otp-input {
-  width: 48px;
+  width: 100%;
+  min-width: 0;
+  max-width: 48px;
   height: 56px;
   text-align: center;
   font-size: 24px;
@@ -94,6 +98,58 @@
   color: var(--ink);
   transition: all 0.2s ease;
   outline: none;
+}
+
+@media (max-width: 480px) {
+  .signup-container {
+    justify-content: center;
+    padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  }
+
+  .signup-card {
+    max-width: none;
+    border-radius: 18px;
+    padding: 28px 18px;
+  }
+
+  .signup-header {
+    margin-bottom: 24px;
+  }
+
+  .signup-title {
+    font-size: 22px;
+  }
+
+  .signup-sub {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .otp-input {
+    height: clamp(46px, 14vw, 54px);
+    border-radius: 10px;
+    font-size: clamp(18px, 6vw, 23px);
+  }
+
+  .btn-submit,
+  .btn-secondary {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 340px) {
+  .signup-card {
+    padding-inline: 14px;
+  }
+
+  .otp-container {
+    gap: 3px;
+  }
+
+  .otp-input {
+    height: 44px;
+    font-size: 18px;
+  }
 }
 
 .otp-input:focus {
@@ -127,6 +183,13 @@
 
 .btn-submit:active {
   transform: scale(0.98);
+}
+
+.btn-submit:disabled {
+  cursor: wait;
+  opacity: 0.78;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {

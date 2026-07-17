@@ -147,3 +147,35 @@
   color: var(--muted);
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .kyc-container {
+    padding: 16px 12px;
+  }
+
+  .kyc-header {
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .tier-card {
+    padding: 20px 16px;
+  }
+
+  .tier-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tier-name {
+    font-size: 16px;
+  }
+
+  .tier-benefits li {
+    align-items: flex-start;
+  }
+
+  .tier-benefits li svg {
+    flex-shrink: 0;
+  }
+}
