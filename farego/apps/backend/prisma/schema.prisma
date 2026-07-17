@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum KycLevel {
+  BASIC
+  VERIFIED
+  BUSINESS
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum LedgerEntryType {
+  CREDIT
+  DEBIT
+}
+
+enum NotificationChannel {
+  IN_APP
+  SMS
+  FCM
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model Driver {
+  id              String         @id @default(uuid()) @db.Uuid
+  publicId        String         @unique @default(cuid())
+  fullName        String
+  phone           String         @unique
+  email           String?
+  consentedAt     DateTime
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  kycProfile      KycProfile?
+  wallet          WalletAccount?
+  authSessions    AuthSession[]
+  payments        Payment[]
+  notifications   Notification[]
+}
+
+model OtpChallenge {
+  id          String    @id @default(uuid()) @db.Uuid
+  phone       String
+  codeHash    String
+  expiresAt   DateTime
+  verifiedAt  DateTime?
+  attempts    Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@index([phone, createdAt])
+}
+
+model AuthSession {
+  id         String    @id @default(uuid()) @db.Uuid
+  tokenHash  String    @unique
+  phone      String
+  driverId   String?   @db.Uuid
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  driver     Driver?   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@index([phone])
+  @@index([driverId])
+}
+
+model KycProfile {
+  id            String    @id @default(uuid()) @db.Uuid
+  driverId      String    @unique @db.Uuid
+  level         KycLevel  @default(BASIC)
+  address       String?
+  bvnVerified   Boolean   @default(false)
+  ninVerified   Boolean   @default(false)
+  unionName     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  driver        Driver    @relation(fields: [driverId], references: [id], onDelete: Cascade)
+}
+
+model WalletAccount {
+  id                    String          @id @default(uuid()) @db.Uuid
+  driverId              String          @unique @db.Uuid
+  provider              String          @default("WEMA_MOCK")
+  accountNumber         String          @unique
+  accountName           String
+  bankCode              String          @default("035")
+  balanceKobo           BigInt          @default(0)
+  providerReference     String?         @unique
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  driver                Driver          @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  ledgerEntries         LedgerEntry[]
+}
+
+model Payment {
+  id                    String          @id @default(uuid()) @db.Uuid
+  orderId               String          @unique
+  driverId              String          @db.Uuid
+  amountKobo            BigInt
+  currency              String          @default("NGN")
+  description           String?
+  customerName          String
+  customerEmail         String
+  customerPhone         String?
+  status                PaymentStatus   @default(PENDING)
+  provider              String          @default("ALATPAY_MOCK")
+  providerTransactionId String?         @unique
+  providerPayload       Json?
+  completedAt           DateTime?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  driver                Driver          @relation(fields: [driverId], references: [id], onDelete: Restrict)
+  ledgerEntry           LedgerEntry?
+
+  @@index([driverId, createdAt])
+  @@index([status])
+}
+
+model LedgerEntry {
+  id          String          @id @default(uuid()) @db.Uuid
+  walletId    String          @db.Uuid
+  paymentId   String?         @unique @db.Uuid
+  type        LedgerEntryType
+  amountKobo  BigInt
+  description String
+  createdAt   DateTime        @default(now())
+  wallet      WalletAccount   @relation(fields: [walletId], references: [id], onDelete: Restrict)
+  payment     Payment?        @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@index([walletId, createdAt])
+}
+
+model Notification {
+  id         String              @id @default(uuid()) @db.Uuid
+  driverId   String              @db.Uuid
+  channel    NotificationChannel
+  status     NotificationStatus  @default(PENDING)
+  title      String
+  message    String
+  readAt     DateTime?
+  sentAt     DateTime?
+  createdAt  DateTime            @default(now())
+  driver     Driver              @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@index([driverId, createdAt])
+}
