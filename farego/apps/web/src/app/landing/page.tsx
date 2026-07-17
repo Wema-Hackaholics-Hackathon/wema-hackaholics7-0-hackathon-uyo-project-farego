@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import "./landing.css";
 
@@ -15,7 +16,12 @@ export default function LandingPage() {
     <div className="paygo-web">
       <nav className="nav">
         <div className="nav-brand">
-          <img src="/farego_logo_mark.png" alt="FareGo" style={{ height: '32px', objectFit: 'contain' }} />
+          <Image
+            src="/farego_logo_mark.png"
+            alt="FareGo"
+            width={32}
+            height={32}
+          />
         </div>
         <div className="nav-links">
           <Link href="#">How it works</Link>
@@ -24,7 +30,7 @@ export default function LandingPage() {
           <Link href="#">Support</Link>
         </div>
         <div className="nav-actions">
-          <Link className="nav-login" href="#">
+          <Link className="nav-login" href="/login">
             Log in
           </Link>
           <button className="nav-cta" onClick={handleRegister}>
@@ -36,14 +42,17 @@ export default function LandingPage() {
       <section className="hero">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="eyebrow-dot"></span>Accounts issued with Wema Bank &middot; ALAT
+            <span className="eyebrow-dot"></span>Accounts issued with Wema Bank
+            &middot; ALAT
           </div>
           <h1 className="hero-title">
-            The fare lands in your account <em>before your passenger steps off.</em>
+            The fare lands in your account{" "}
+            <em>before your passenger steps off.</em>
           </h1>
           <p className="hero-sub">
             FareGo turns every Keke and bus fare into a real bank transaction no
-            branch visit, no cash to count at the end of the day. Just scan and go.
+            branch visit, no cash to count at the end of the day. Just scan and
+            go.
           </p>
           <div className="hero-actions">
             <button className="btn-primary" onClick={handleRegister}>
@@ -52,8 +61,8 @@ export default function LandingPage() {
             <button className="btn-ghost">See how it works</button>
           </div>
           <div className="trust-row">
-            <b>50,000+</b>&nbsp;fares paid digitally &middot; <b>0</b> branch visits
-            required
+            <b>50,000+</b>&nbsp;fares paid digitally &middot; <b>0</b> branch
+            visits required
           </div>
         </div>
 
@@ -81,7 +90,14 @@ export default function LandingPage() {
                     d="M70 200 V70 a10 10 0 0 1 10 -10 H104 a10 10 0 0 1 10 10 V96 H130 a34 34 0 0 1 0 68 H104 V200 a10 10 0 0 1 -10 10 H80 a10 10 0 0 1 -10 -10 Z"
                     fill="#5B2A86"
                   />
-                  <rect x="130" y="112" width="16" height="16" rx="3" fill="#F0B429" />
+                  <rect
+                    x="130"
+                    y="112"
+                    width="16"
+                    height="16"
+                    rx="3"
+                    fill="#F0B429"
+                  />
                   <circle cx="192" cy="196" r="9" fill="#5B2A86" />
                 </svg>
               </div>
@@ -106,8 +122,8 @@ export default function LandingPage() {
           <div className="logo-placeholder">FareGo</div>
           <h3 className="feature-title">Show your QR</h3>
           <p className="feature-body">
-            A code for your vehicle. Passengers scan it, or dial USSD if they don&apos;t
-            have data.
+            A code for your vehicle. Passengers scan it, or dial USSD if they
+            don&apos;t have data.
           </p>
         </div>
         <div className="feature-card">
@@ -119,6 +135,28 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+
+      <footer className="landing-footer">
+        <div className="footer-inner">
+          <div className="footer-brand">
+            <Image src="/farego_logo_mark.png" alt="" width={32} height={32} />
+            <div>
+              <strong>FareGo</strong>
+              <p>Simple, secure digital fares for everyday transport.</p>
+            </div>
+          </div>
+
+          <div className="footer-links" aria-label="Footer navigation">
+            <Link href="/signup">Register</Link>
+            <Link href="/login">Log in</Link>
+            <Link href="/onboarding">How it works</Link>
+          </div>
+
+          <p className="footer-note">
+            Powered by ALAT by Wema · © {new Date().getFullYear()} FareGo
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
